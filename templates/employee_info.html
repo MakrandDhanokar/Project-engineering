@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles/info.css" />
+    <title>Document</title>
+</head>
+<body>
+    <div class="employee-card">
+        <img src="{{ user_details.image_url }}" alt="Employee Photo" class="employee-photo">
+        <div class="emp-id">Employee ID: {{ user_details.id }}</div>
+        <div class="info">
+            <h2>Name: {{ user_details.name }}</h2>
+            <p>Address: {{ user_details.address }}</p>
+            <p>Email: {{ user_details.email }}</p>
+            <p>Major: {{ user_details.major }}</p>
+            <p>DOB: {{ user_details.dob }}</p>
+            <p>Last Attendance: {{ user_details.last_attendance_time }}</p>
+            <p>Total Attendance: {{ user_details.total_attendance }}</p>
+            <p>Year: {{ user_details.year }}</p>
+        </div>
+    </div>
+</body>
+</html>

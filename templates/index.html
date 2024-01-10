@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/styles/style.css">
+</head>
+<body>
+    <div class="head">
+
+        <nav>
+            <h4>Logo</h4>
+            <ul>
+                <li>Home</li>
+                <li>About Us</li>
+            <li>Services</li>
+            <li>Contact Us</li>
+        </ul>
+        <button>Contact Us</button>
+    </nav>
+
+    <h2 class="title">Steamline Workforce management system</h2>
+    <div style="display: flex; align-items: center; justify-content: center; margin-top: 60px;">
+        <button style="width: 200px;">Login</button>
+    </div>
+    <div class="main-img">
+        <img id="video_stream" src="{{ url_for('video_feed') }}" alt="Video Stream" />
+    </div>
+</div>
+
+<div class="attendence">
+    <h2>Attendence</h2>
+    <div id="attendance-details">
+
+        <!-- Employee details will be filled dynamically -->
+    </div>
+<>
+<!--    <div class="employee">-->
+<!--        <h4>Mr Makrand Dhanokar</h4>-->
+<!--        <h5>0 Hrs</h5>-->
+<!--        <button style="padding: 2px 20px; font-size: 20px; height: 40px; margin-top: 18px;">View</button>-->
+<!--    </div>-->
+<!--    <div class="employee">-->
+<!--        <h4>Mr Makrand Dhanokar</h4>-->
+<!--        <h5>0 Hrs</h5>-->
+<!--        <button style="padding: 2px 20px; font-size: 20px; height: 40px; margin-top: 18px;">View</button>-->
+<!--    </div>-->
+<!--    <div class="employee">-->
+<!--        <h4>Mr Makrand Dhanokar</h4>-->
+<!--        <h5>0 Hrs</h5>-->
+<!--        <button style="padding: 2px 20px; font-size: 20px; height: 40px; margin-top: 18px;">View</button>-->
+<!--    </div>-->
+</div>
+
+<h1 style="text-align: center; font-size: 60px; color: #434445;">Our Team</h1>
+<div style="width: 4px; height: 1px; color: #377f8e;"></div>
+<!--<div class="team">-->
+<!--    <div class="team">-->
+
+<!--        <div class="profile">-->
+<!--            <img src="https://media.licdn.com/dms/image/C4E03AQHZtbp9_4duQA/profile-displayphoto-shrink_800_800/0/1639133360353?e=2147483647&v=beta&t=cCltR9ENbXew2tDhVblAAP5prPw3DH8e1rbRGXcR8fA" alt="">-->
+<!--            <h4>Makrand Dhanokar</h4>-->
+<!--            <h5>Backend Developer</h5>-->
+<!--        </div>-->
+<!--        <div class="profile">-->
+<!--            <img src="https://media.licdn.com/dms/image/C4E03AQHZtbp9_4duQA/profile-displayphoto-shrink_800_800/0/1639133360353?e=2147483647&v=beta&t=cCltR9ENbXew2tDhVblAAP5prPw3DH8e1rbRGXcR8fA" alt="">-->
+<!--            <h4>Makrand Dhanokar</h4>-->
+<!--            <h5>Backend Developer</h5>-->
+<!--        </div>-->
+<!--        <div class="profile">-->
+<!--            <img src="https://media.licdn.com/dms/image/C4E03AQHZtbp9_4duQA/profile-displayphoto-shrink_800_800/0/1639133360353?e=2147483647&v=beta&t=cCltR9ENbXew2tDhVblAAP5prPw3DH8e1rbRGXcR8fA" alt="">-->
+<!--            <h4>Makrand Dhanokar</h4>-->
+<!--            <h5>Backend Developer</h5>-->
+<!--        </div>-->
+<!--        <div class="profile">-->
+<!--            <img src="https://media.licdn.com/dms/image/C4E03AQHZtbp9_4duQA/profile-displayphoto-shrink_800_800/0/1639133360353?e=2147483647&v=beta&t=cCltR9ENbXew2tDhVblAAP5prPw3DH8e1rbRGXcR8fA" alt="">-->
+<!--            <h4>Makrand Dhanokar</h4>-->
+<!--            <h5>Backend Developer</h5>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<div class="team">
+    <div class="row">
+        {% if employee_data %}
+            {% for employee_id, employee_details in employee_data.items() %}
+                <div class="col-md-4">
+                    <a href="{{ url_for('info', employee_id=employee_id) }}">
+                    <div class="profile">
+                            <img src="{{ employee_details.image_url }}" alt="Employee Image">
+                            <h4>{{ employee_details.name }}</h4>
+                            <h5>{{ employee_details.major }}</h5>
+                    </a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No employee data available</p>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    function updateAttendanceDetails() {
+    fetch('/attendance_data')
+        .then(response => response.json())
+        .then(data => {
+            const attendanceDetails = document.getElementById('attendance-details');
+            attendanceDetails.innerHTML = ''; // Clear existing attendance details
+
+            if (data.attendance_data) {
+                data.attendance_data.forEach(row => {
+                    const employeeDiv = document.createElement('div');
+                    employeeDiv.classList.add('employee');
+
+                    const h4 = document.createElement('h4');
+                    h4.textContent = row.Name;
+
+                    const h5 = document.createElement('h4');
+                    h5.textContent = row['Time'];
+
+                    const viewdiv = document.createElement('div');
+                    const livetime = document.createElement('h4');
+                    livetime.textContent = row['Total Time'];
+                    livetime.style.display = 'none';
+                    livetime.style.transition = 'display 2s ease-in-out';
+                    // transition: ;
+
+                    const button = document.createElement('button');
+                    button.textContent = 'View';
+                    button.style.padding = '2px 20px';
+                    button.style.fontSize = '20px';
+                    button.style.height = '40px';
+                    button.style.marginTop = '18px';
+
+                    viewdiv.appendChild(button);
+
+                    button.addEventListener("click", func, false); //where func is your function name
+
+                    function func()
+                    {
+                        console.log(livetime.style.display);
+                        if(livetime.style.display === 'block')
+                        {
+                           livetime.style.display = 'none';
+                           button.textContent = 'view';
+                        }
+                        else if(livetime.style.display === 'none')
+                        {
+                           livetime.style.display = 'block';
+                           button.textContent = 'hide';
+
+                        }
+
+                    }
+
+                    viewdiv.appendChild(livetime);
+
+                    employeeDiv.appendChild(h4);
+                    employeeDiv.appendChild(h5);
+                    employeeDiv.appendChild(viewdiv); // Append the button to the employeeDiv
+
+
+                    attendanceDetails.appendChild(employeeDiv);
+                });
+            } else {
+                const noDataMessage = document.createElement('p');
+                noDataMessage.textContent = data.message;
+                attendanceDetails.appendChild(noDataMessage); // Show message if no data available
+            }
+        });
+    }
+
+    // Refresh the details every 5 seconds
+    setInterval(updateAttendanceDetails, 5000);
+
+    // Initially load the details
+    updateAttendanceDetails();
+</script>
+
+</body>
+</html>
